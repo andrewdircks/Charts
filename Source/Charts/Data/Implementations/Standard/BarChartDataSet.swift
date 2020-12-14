@@ -21,6 +21,7 @@ public enum BarGradientOrientation: Int
 
 open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, BarChartDataSetProtocol
 {
+    public var cornerRadius: Int = 0
     
     private func initialize()
     {
@@ -136,6 +137,7 @@ open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, BarChartData
         guard let gradientColors = barGradientColors else { return nil }
         return gradientColors[index % gradientColors.count]
     }
+    
     
     // MARK: - NSCopying
     

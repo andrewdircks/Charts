@@ -181,9 +181,9 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
 
                     let offsetAxis = offsetView.leftAxis.isEnabled ? offsetView.leftAxis : offsetView.rightAxis
 
-                    if barData.yMin.sign != barData.yMax.sign 
-                    { 
-                        offset = 0.0 
+                    if barData.yMin.sign != barData.yMax.sign
+                    {
+                        offset = 0.0
                     }
                     else if !offsetAxis._customAxisMin {
                         offset = CGFloat(offsetAxis.axisMinimum)
@@ -352,7 +352,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         
         if let gradientColor = dataSet.barGradientColor(at: index)
         {
-            drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation)
+            drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, cornerRadius: dataSet.cornerRadius)
         }
         else
         {
@@ -363,7 +363,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         }
     }
     
-    open func drawGradient(context: CGContext, barRect: CGRect, gradientColors: Array<NSUIColor>, orientation: BarGradientOrientation)
+    open func drawGradient(context: CGContext, barRect: CGRect, gradientColors: Array<NSUIColor>, orientation: BarGradientOrientation, cornerRadius: Int)
     {
         let cgColors = gradientColors.map{ $0.cgColor } as CFArray
         let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cgColors, locations: nil)
@@ -382,9 +382,10 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             endPoint = CGPoint(x: barRect.maxX, y: barRect.midY)
         }
         
-        let path = CGPath(rect: barRect, transform: nil)
+//        let path = CGPath(rect: barRect, transform: nil)
+        let path = UIBezierPath(roundedRect: barRect, cornerRadius: CGFloat(cornerRadius))
         
-        context.addPath(path)
+        context.addPath(path.cgPath)
         context.clip()
         context.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: [])
     }
